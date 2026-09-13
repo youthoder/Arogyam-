@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arogyam — Find Your Balance</title>
+  <meta name="description" content="Arogyam yoga and wellness frontend prototype." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --forest:#244b3a; --sage:#78927f; --mint:#e7f0e8; --cream:#f8f5ed;
+      --sand:#eadfca; --gold:#b99055; --ink:#1e2b24; --muted:#68746d;
+      --white:#fff; --shadow:0 18px 50px rgba(36,75,58,.10);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    a{text-decoration:none;color:inherit}
+    .app{min-height:100vh}
+    .nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:18px 6%;background:rgba(248,245,237,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(36,75,58,.07)}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--forest);font-size:22px}
+    .brand-mark{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--forest);color:white;font-size:18px}
+    .nav-links{display:flex;gap:28px;color:#53625a;font-size:14px}
+    .nav-links a:hover,.nav-links a.active{color:var(--forest);font-weight:700}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .btn{border:0;border-radius:999px;padding:12px 20px;font-weight:700;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:var(--forest);color:white;box-shadow:0 10px 25px rgba(36,75,58,.18)}
+    .btn-soft{background:var(--mint);color:var(--forest)}
+    .btn-outline{background:transparent;border:1px solid #cad5cc;color:var(--forest)}
+    .menu{display:none;background:none;border:0;font-size:26px;color:var(--forest)}
+    .page{display:none}
+    .page.active{display:block}
+    .container{width:min(1180px,88%);margin:auto}
+    .hero{padding:74px 0 62px;display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--mint);color:var(--forest);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:700}
+    h1,h2,h3{font-family:"Playfair Display",serif}
+    h1{font-size:clamp(48px,6vw,78px);line-height:1.02;margin:18px 0;color:var(--forest);font-weight:600}
+    h2{font-size:42px;line-height:1.1;margin:0 0 12px;color:var(--forest)}
+    h3{font-size:23px;margin:0 0 8px}
+    .hero p{font-size:18px;line-height:1.75;color:var(--muted);max-width:580px}
+    .hero-buttons{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+    .hero-art{min-height:480px;border-radius:48% 48% 24px 24px;background:linear-gradient(145deg,#dbe8dc,#b9cbbd);position:relative;overflow:hidden;box-shadow:var(--shadow)}
+    .sun{position:absolute;width:180px;height:180px;border-radius:50%;background:#f1dfb7;top:50px;right:45px}
+    .leaf{position:absolute;border-radius:100% 0 100% 0;background:#6f8d78;opacity:.7;transform:rotate(35deg)}
+    .leaf.l1{width:150px;height:65px;left:-30px;top:130px}.leaf.l2{width:180px;height:70px;right:-50px;bottom:90px;transform:rotate(210deg)}
+    .yogi{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);width:260px;height:350px}
+    .yogi:before{content:"";position:absolute;width:72px;height:72px;background:#c89067;border-radius:50%;left:94px;top:18px}
+    .yogi:after{content:"";position:absolute;width:145px;height:210px;background:#496b56;border-radius:65px 65px 28px 28px;left:60px;top:80px;box-shadow:-105px 145px 0 -42px #496b56,105px 145px 0 -42px #496b56}
+    .hero-card{position:absolute;left:24px;bottom:24px;background:rgba(255,255,255,.88);padding:15px 18px;border-radius:18px;box-shadow:0 12px 35px rgba(0,0,0,.08);font-size:13px}
+    .section{padding:70px 0}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:28px}
+    .section-head p{color:var(--muted);max-width:530px;line-height:1.6}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:white;border-radius:var(--radius);overflow:hidden;box-shadow:0 10px 35px rgba(36,75,58,.06);border:1px solid rgba(36,75,58,.05)}
+    .course-cover{height:185px;padding:20px;display:flex;align-items:end;position:relative;background:linear-gradient(135deg,#dfe9df,#a9c1ae)}
+    .course-cover.orange{background:linear-gradient(135deg,#f0dfc3,#d2ad78)}
+    .course-cover.blue{background:linear-gradient(135deg,#d8e5e3,#9db9b4)}
+    .pill{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.85);color:var(--forest);padding:7px 11px;border-radius:999px;font-size:11px;font-weight:700}
+    .cover-icon{font-size:55px;opacity:.35;margin-left:auto}
+    .card-body{padding:20px}
+    .meta{font-size:12px;color:var(--muted);display:flex;gap:12px;margin-top:12px}
+    .rating{color:#9b783f;font-weight:700}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+    .wellness-box{background:var(--forest);color:white;border-radius:34px;padding:44px;min-height:310px;display:flex;flex-direction:column;justify-content:center}
+    .wellness-box h2{color:white}.wellness-box p{color:#d7e4db;line-height:1.7}
+    .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .stat{background:white;border-radius:22px;padding:25px;box-shadow:var(--shadow)}
+    .stat strong{font:600 34px "Playfair Display";color:var(--forest);display:block}.stat span{color:var(--muted);font-size:13px}
+    .page-title{padding:58px 0 28px}.page-title p{color:var(--muted);line-height:1.7;max-width:650px}
+    .filters{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 28px}.filter{border:1px solid #d4ddd5;background:white;border-radius:999px;padding:9px 16px;color:#58655d}.filter.active{background:var(--forest);color:white;border-color:var(--forest)}
+    .auth-wrap{min-height:calc(100vh - 76px);display:grid;place-items:center;padding:50px 20px}
+    .auth-card{width:min(450px,100%);background:white;padding:38px;border-radius:30px;box-shadow:var(--shadow)}
+    .auth-card h2{text-align:center}.auth-card .sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:25px}
+    label{display:block;font-size:13px;font-weight:700;margin:15px 0 7px}.input{width:100%;padding:13px 15px;border:1px solid #d5ddd7;border-radius:13px;outline:none;background:#fbfcfb}.input:focus{border-color:var(--sage)}
+    .full{width:100%;margin-top:20px}.switch{text-align:center;color:var(--muted);font-size:13px;margin-top:20px}.switch a{color:var(--forest);font-weight:700}
+    .detail{display:grid;grid-template-columns:1fr 1fr;gap:45px;padding:55px 0}.detail-cover{border-radius:34px;min-height:460px;background:linear-gradient(145deg,#dfe9df,#9fb6a4);display:grid;place-items:center;font-size:120px}
+    .detail h1{font-size:55px;margin:15px 0}.detail p{color:var(--muted);line-height:1.8}.feature-list{display:grid;gap:10px;margin:25px 0}.feature{background:white;border-radius:14px;padding:13px 15px}
+    .profile{display:grid;grid-template-columns:280px 1fr;gap:25px;padding:55px 0}.profile-side,.profile-main{background:white;border-radius:28px;padding:28px;box-shadow:var(--shadow)}.avatar{width:86px;height:86px;border-radius:50%;background:var(--mint);display:grid;place-items:center;font-size:34px;margin-bottom:14px}
+    .progress{height:9px;background:#e6ece7;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;width:68%;background:var(--forest);border-radius:99px}
+    .live-banner{background:linear-gradient(135deg,#244b3a,#527863);color:white;border-radius:30px;padding:35px;display:flex;justify-content:space-between;align-items:center;gap:20px}.live-banner h2{color:white}
+    footer{background:#183529;color:#dce8df;padding:42px 0;margin-top:50px}.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:35px}.footer-grid h3{color:white;font-family:"DM Sans";font-size:15px}.footer-grid a,.footer-grid p{display:block;color:#b7c8bd;font-size:13px;line-height:2}
+    .toast{position:fixed;right:22px;bottom:22px;background:var(--forest);color:white;padding:14px 18px;border-radius:14px;box-shadow:var(--shadow);transform:translateY(120px);opacity:0;transition:.3s;z-index:50}.toast.show{transform:none;opacity:1}
+    @media(max-width:850px){
+      .nav-links{display:none}.menu{display:block}.nav-actions .btn-outline{display:none}
+      .hero,.split,.detail,.profile{grid-template-columns:1fr}.hero{padding-top:45px}.hero-art{min-height:390px}
+      .cards{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:560px){
+      .nav{padding:14px 5%}.container{width:90%}.cards,.stat-grid{grid-template-columns:1fr}.hero h1{font-size:50px}.hero-art{min-height:340px}.detail h1{font-size:43px}.wellness-box{padding:30px}
+      .footer-grid{grid-template-columns:1fr}.section{padding:48px 0}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <nav class="nav">
+    <a class="brand" href="#home" onclick="showPage('home')"><span class="brand-mark">ॐ</span>Arogyam</a>
+    <div class="nav-links">
+      <a href="#home" data-page="home">Home</a><a href="#courses" data-page="courses">Courses</a><a href="#live" data-page="live">Live</a><a href="#about" data-page="about">About</a><a id="profileLink" href="#profile" data-page="profile" onclick="requireLogin('profile')" style="display:none">Profile</a>
+    </div>
+    <div class="nav-actions">
+      <button id="navLogin" class="btn btn-outline" onclick="showPage('login')">Log in</button>
+      <button id="navJoin" class="btn btn-primary" onclick="showPage('signup')">Join Arogyam</button>
+    </div>
+    <button class="menu" onclick="toggleMenu()">☰</button>
+  </nav>
+
+  <main id="home" class="page active">
+    <section class="hero container">
+      <div>
+        <span class="eyebrow">✦ A calmer way to feel better</span>
+        <h1>Breathe.<br>Move.<br>Bloom.</h1>
+        <p>Build a simple daily yoga practice with guided classes, mindful routines and live sessions designed for every level.</p>
+        <div class="hero-buttons"><button class="btn btn-primary" onclick="showPage('courses')">Explore classes →</button><button class="btn btn-soft" onclick="showPage('about')">Why Arogyam?</button></div>
+      </div>
+      <div class="hero-art"><div class="sun"></div><div class="leaf l1"></div><div class="leaf l2"></div><div class="yogi"></div><div class="hero-card">☀ Morning Flow · 20 min</div></div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head"><div><span class="eyebrow">Practice library</span><h2>Find your flow</h2></div><p>Short, focused classes for energy, flexibility, strength, relaxation and a better start to your day.</p></div>
+      <div class="cards">
+        <article class="card"><div class="course-cover"><span class="pill">BEGINNER</span><div class="cover-icon">🧘</div></div><div class="card-body"><h3>Morning Awakening</h3><p>Gentle stretches to wake your body and mind.</p><div class="meta"><span>20 min</span><span>12 classes</span><span class="rating">★ 4.9</span></div></div></article>
+        <article class="card"><div class="course-cover orange"><span class="pill">POPULAR</span><div class="cover-icon">🌿</div></div><div class="card-body"><h3>Stress Release</h3><p>Slow movement and breathing for a calmer evening.</p><div class="meta"><span>25 min</span><span>16 classes</span><span class="rating">★ 4.8</span></div></div></article>
+        <article class="card"><div class="course-cover blue"><span class="pill">INTERMEDIATE</span><div class="cover-icon">🌊</div></div><div class="card-body"><h3>Core & Balance</h3><p>Build stability, mobility and controlled strength.</p><div class="meta"><span>30 min</span><span>18 classes</span><span class="rating">★ 4.9</span></div></div></article>
+      </div>
+    </section>
+
+    <section class="section container split">
+      <div class="wellness-box"><span class="eyebrow" style="width:max-content">Arogyam daily</span><h2>A little practice can change your whole day.</h2><p>Set a realistic routine, track your progress and return to your breath whenever you need a reset.</p><button class="btn btn-soft" style="width:max-content" onclick="showPage('signup')">Start your journey</button></div>
+      <div class="stat-grid"><div class="stat"><strong>120+</strong><span>Guided classes</span></div><div class="stat"><strong>25k+</strong><span>Minutes practiced</span></div><div class="stat"><strong>4.9/5</strong><span>Average class rating</span></div><div class="stat"><strong>7 days</strong><span>Free starter plan</span></div></div>
+    </section>
+  </main>
+
+  <main id="courses" class="page">
+    <section class="container page-title"><span class="eyebrow">Arogyam library</span><h2>Choose your practice</h2><p>Explore free and premium programs. Start small, stay consistent and let your practice grow.</p></section>
+    <section class="container">
+      <div class="filters"><button class="filter active">All</button><button class="filter">Beginner</button><button class="filter">Stress relief</button><button class="filter">Flexibility</button><button class="filter">Strength</button><button class="filter">Premium</button></div>
+      <div class="cards">
+        <article class="card"><div class="course-cover"><span class="pill">FREE</span><div class="cover-icon">🌅</div></div><div class="card-body"><h3>7-Day Beginner Flow</h3><p>A gentle introduction to daily yoga.</p><div class="meta"><span>7 days</span><span>7 classes</span></div><button class="btn btn-primary full" onclick="showPage('detail')">View course</button></div></article>
+        <article class="card"><div class="course-cover orange"><span class="pill">PREMIUM</span><div class="cover-icon">🌱</div></div><div class="card-body"><h3>21-Day Flexibility</h3><p>Progressive routines for mobility and range of motion.</p><div class="meta"><span>21 days</span><span>21 classes</span></div><button class="btn btn-primary full" onclick="showPage('detail')">View course</button></div></article>
+        <article class="card"><div class="course-cover blue"><span class="pill">PREMIUM</span><div class="cover-icon">🪷</div></div><div class="card-body"><h3>Mindful Meditation</h3><p>Breathing and meditation sessions for everyday calm.</p><div class="meta"><span>14 days</span><span>14 classes</span></div><button class="btn btn-primary full" onclick="showPage('detail')">View course</button></div></article>
+        <article class="card"><div class="course-cover"><span class="pill">FREE</span><div class="cover-icon">🌿</div></div><div class="card-body"><h3>Evening Unwind</h3><p>Release tension and slow down before sleep.</p><div class="meta"><span>15 min</span><span>10 classes</span></div><button class="btn btn-primary full" onclick="showPage('detail')">View course</button></div></article>
+        <article class="card"><div class="course-cover orange"><span class="pill">PREMIUM</span><div class="cover-icon">🔥</div></div><div class="card-body"><h3>Strength with Yoga</h3><p>Controlled flows for full-body strength.</p><div class="meta"><span>30 min</span><span>20 classes</span></div><button class="btn btn-primary full" onclick="showPage('detail')">View course</button></div></article>
+        <article class="card"><div class="course-cover blue"><span class="pill">LIVE</span><div class="cover-icon">☀</div></div><div class="card-body"><h3>Weekend Sunrise Flow</h3><p>Join a guided live community practice.</p><div class="meta"><span>45 min</span><span>Sat · 7 AM</span></div><button class="btn btn-primary full" onclick="showPage('live')">See live class</button></div></article>
+      </div>
+    </section>
+  </main>
+
+  <main id="detail" class="page">
+    <section class="container detail">
+      <div class="detail-cover">🪷</div>
+      <div><span class="eyebrow">21-DAY PROGRAM · PREMIUM</span><h1>Flexibility, gently built.</h1><p>A progressive program combining mobility, mindful breathing and accessible yoga flows. Each session is designed to feel useful, not overwhelming.</p><div class="feature-list"><div class="feature">✓ 21 guided classes</div><div class="feature">✓ Beginner-friendly modifications</div><div class="feature">✓ Downloadable practice plan</div><div class="feature">✓ Progress tracking</div></div><button class="btn btn-primary" onclick="toast('Checkout screen connected — demo only.')">Start 7-day demo →</button></div>
+    </section>
+  </main>
+
+  <main id="live" class="page">
+    <section class="container page-title"><span class="eyebrow">Live studio</span><h2>Practice together</h2><p>Join scheduled classes, meet your instructors and keep your practice social without making it complicated.</p></section>
+    <section class="container">
+      <div class="live-banner"><div><span class="eyebrow">NEXT LIVE CLASS</span><h2>Weekend Sunrise Flow</h2><p>Saturday · 7:00 AM · 45 minutes</p></div><button class="btn btn-soft" onclick="toast('You are on the reminder list.')">Remind me</button></div>
+      <div class="section"><div class="section-head"><div><span class="eyebrow">This week</span><h2>Upcoming sessions</h2></div></div><div class="cards">
+        <article class="card"><div class="card-body"><span class="eyebrow">SAT · 7:00 AM</span><h3>Sunrise Flow</h3><p>Wake up slowly with breath-led movement.</p><button class="btn btn-primary" onclick="toast('Class added to your calendar.')">Reserve seat</button></div></article>
+        <article class="card"><div class="card-body"><span class="eyebrow">SUN · 6:00 PM</span><h3>Deep Relaxation</h3><p>Gentle stretches, breathwork and guided rest.</p><button class="btn btn-primary" onclick="toast('Class added to your calendar.')">Reserve seat</button></div></article>
+        <article class="card"><div class="card-body"><span class="eyebrow">WED · 7:30 PM</span><h3>Core & Balance</h3><p>Steady movement to build control and stability.</p><button class="btn btn-primary" onclick="toast('Class added to your calendar.')">Reserve seat</button></div></article>
+      </div></div>
+    </section>
+  </main>
+
+  <main id="about" class="page">
+    <section class="container page-title"><span class="eyebrow">Our philosophy</span><h2>Yoga that fits real life.</h2><p>Arogyam is designed around a simple idea: a healthy practice should feel sustainable, welcoming and easy to return to.</p></section>
+    <section class="section container split"><div class="wellness-box"><h2>Less pressure.<br>More presence.</h2><p>We keep the interface calm and the practice practical: clear programs, short classes, progress without obsession and room to breathe.</p></div><div><h3>Made for beginners and beyond</h3><p style="color:var(--muted);line-height:1.8">Start with five minutes or follow a full program. Choose free content or unlock premium courses when you are ready. Live classes add a human connection to the routine.</p><h3 style="margin-top:28px">The Arogyam promise</h3><p style="color:var(--muted);line-height:1.8">Simple navigation, mindful visuals and content organized around what you want to feel: energized, flexible, strong or calm.</p></div></section>
+  </main>
+
+  <main id="profile" class="page">
+    <section class="container profile"><aside class="profile-side"><div class="avatar">ॐ</div><h3 id="profileName">Namaste</h3><p id="profileMeta" style="color:var(--muted)">Log in to see your progress</p><button class="btn btn-soft full" onclick="toast('Profile editing is a demo.')">Edit profile</button></aside><section class="profile-main"><span class="eyebrow">Your progress</span><h2>Keep your rhythm.</h2><p style="color:var(--muted)">You have completed 68% of your current program.</p><div class="progress"><span></span></div><div class="cards" style="margin-top:25px"><div class="stat"><strong>12</strong><span>Day streak</span></div><div class="stat"><strong>18</strong><span>Classes done</span></div><div class="stat"><strong>6h 20m</strong><span>Total practice</span></div></div></section></section>
+  </main>
+
+  <main id="login" class="page"><section class="auth-wrap"><div class="auth-card"><h2>Welcome back</h2><p class="sub">Continue your Arogyam practice.</p><label>Email</label><input id="loginEmail" class="input" type="email" placeholder="you@example.com"><label>Password</label><input id="loginPassword" class="input" type="password" placeholder="••••••••"><button class="btn btn-primary full" onclick="handleLogin()">Log in</button><p class="switch">New to Arogyam? <a href="#signup" onclick="showPage('signup')">Create an account</a></p></div></section></main>
+
+  <main id="signup" class="page"><section class="auth-wrap"><div class="auth-card"><h2>Begin your journey</h2><p class="sub">Create your free Arogyam account.</p><label>Name</label><input id="signupName" class="input" placeholder="Your name"><label>Email</label><input id="signupEmail" class="input" type="email" placeholder="you@example.com"><label>Password</label><input id="signupPassword" class="input" type="password" placeholder="Create a password"><button class="btn btn-primary full" onclick="handleSignup()">Create account</button><p class="switch">Already a member? <a href="#login" onclick="showPage('login')">Log in</a></p></div></section></main>
+
+  <footer><div class="container footer-grid"><div><div class="brand" style="color:white"><span class="brand-mark">ॐ</span>Arogyam</div><p>A calmer way to move, breathe and feel well.</p></div><div><h3>Explore</h3><a href="#courses" onclick="showPage('courses')">Courses</a><a href="#live" onclick="showPage('live')">Live classes</a><a href="#about" onclick="showPage('about')">About</a></div><div><h3>Account</h3><a href="#login" onclick="showPage('login')">Log in</a><a href="#signup" onclick="showPage('signup')">Sign up</a><a href="#profile" onclick="showPage('profile')">My progress</a></div><div><h3>Support</h3><p>help@arogyam.demo</p><p>© 2026 Arogyam</p></div></div></footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API_URL="http://localhost:5000/api";
+async function api(path,options={}){const token=localStorage.getItem("arogyam_token");const r=await fetch(API_URL+path,{...options,headers:{"Content-Type":"application/json",...(token?{Authorization:`Bearer ${token}`}:{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.message||"Server error");return d}
+function saveSession(d){localStorage.setItem("arogyam_token",d.token);localStorage.setItem("arogyam_user",JSON.stringify(d.user));}
+function clearSession(){localStorage.removeItem("arogyam_token");localStorage.removeItem("arogyam_user");}
+async function handleLogin(){const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value;if(!email||!password)return toast("Please enter email and password.");try{const d=await api("/auth/login",{method:"POST",body:JSON.stringify({email,password})});saveSession(d);updateUserUI(d.user);showPage("profile");toast("Welcome back to Arogyam.")}catch(e){toast(e.message)}}
+async function handleSignup(){const name=document.getElementById("signupName").value.trim(),email=document.getElementById("signupEmail").value.trim(),password=document.getElementById("signupPassword").value;if(!name||!email||!password)return toast("Please fill in all fields.");try{const d=await api("/auth/signup",{method:"POST",body:JSON.stringify({name,email,password})});saveSession(d);updateUserUI(d.user);showPage("profile");toast("Your Arogyam account is ready.")}catch(e){toast(e.message)}}
+async function restoreSession(){if(!localStorage.getItem("arogyam_token"))return;try{const d=await api("/auth/me");localStorage.setItem("arogyam_user",JSON.stringify(d.user));updateUserUI(d.user)}catch{clearSession();updateUserUI(null)}}
+function updateUserUI(u){const l=document.getElementById("navLogin"),j=document.getElementById("navJoin"),pl=document.getElementById("profileLink"),pn=document.getElementById("profileName"),pm=document.getElementById("profileMeta");if(u){l.textContent="Log out";l.onclick=logout;j.textContent="My profile";j.onclick=()=>showPage("profile");if(pl)pl.style.display="block";if(pn)pn.textContent=`Namaste, ${u.name}`;if(pm)pm.textContent=`${u.level||"Beginner"} · ${u.streak||0}-day streak`}else{l.textContent="Log in";l.onclick=()=>showPage("login");j.textContent="Join Arogyam";j.onclick=()=>showPage("signup");if(pl)pl.style.display="none"}}
+function logout(){clearSession();updateUserUI(null);showPage("home");toast("You have been logged out.")}
+function requireLogin(id){if(!localStorage.getItem("arogyam_token")){toast("Please log in first.");showPage("login");return false}showPage(id);return true}
+async function loadBackendCourses(){const grid=document.getElementById("backendCourses");if(!grid)return;try{const d=await api("/courses");if(!d.courses.length)return;grid.innerHTML=d.courses.map(c=>`<article class="card"><div class="course-cover ${c.access==="PREMIUM"?"orange":c.access==="LIVE"?"blue":""}"><span class="pill">${c.access}</span><div class="cover-icon">🧘</div></div><div class="card-body"><h3>${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description||"")}</p><div class="meta"><span>${c.durationMinutes||0} min</span><span>${c.totalClasses||0} classes</span></div><button class="btn btn-primary full" onclick="openCourse('${c._id}')">View course</button></div></article>`).join("")}catch(e){}}
+async function openCourse(id){try{const d=await api("/courses/"+id),c=d.course;document.getElementById("detailTitle").textContent=c.title;document.getElementById("detailDescription").textContent=c.description||"";document.getElementById("detailBadge").textContent=c.access+" PROGRAM";document.getElementById("detailFeatures").innerHTML=`<div class="feature">✓ ${c.totalClasses||0} guided classes</div><div class="feature">✓ ${c.level||"All levels"}</div><div class="feature">✓ Progress tracking</div>`;document.getElementById("detailAction").onclick=()=>requireLogin("detail");showPage("detail")}catch(e){toast(e.message)}}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
+window.addEventListener("DOMContentLoaded",()=>{restoreSession();loadBackendCourses()});
+</script>
+<script>
+  const pages=[...document.querySelectorAll('.page')];
+  function showPage(id){
+    pages.forEach(p=>p.classList.toggle('active',p.id===id));
+    document.querySelectorAll('[data-page]').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
+    location.hash=id;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+  function toggleMenu(){
+    const n=document.querySelector('.nav-links');
+    n.style.display=n.style.display==='flex'?'none':'flex';
+    if(n.style.display==='flex'){n.style.position='absolute';n.style.top='70px';n.style.left='5%';n.style.right='5%';n.style.padding='18px';n.style.background='white';n.style.borderRadius='18px';n.style.flexDirection='column';n.style.boxShadow='var(--shadow)'}
+  }
+  window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(document.getElementById(id))showPage(id)});
+  const initial=location.hash.slice(1); if(initial && document.getElementById(initial)) showPage(initial);
+  document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active')}));
+</script>
+</body>
+</html>
